@@ -42,19 +42,9 @@ export class News extends Component {
   async componentDidMount(){
     this.updateNews();
   }
-
-  handlePrevClick = async ()=>{
-    this.setState({page:this.state.page-1})
-    this.updateNews();
-  }
-  handleNextClick = async ()=>{
-    this.setState({page:this.state.page+1})
-    this.updateNews();
-  }
-
   fetchData = async () => {
+    const url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=${process.env.REACT_APP_NEWS_API}&page=${this.state.page+1}&pageSize=${this.props.pageSize}`;
     this.setState({page:this.state.page+1})
-    const url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=${process.env.REACT_APP_NEWS_API}&page=${this.state.page}&pageSize=${this.props.pageSize}`;
     this.setState({loading:true})
     let data = await fetch(url);
     let parsedData = await data.json();
@@ -65,8 +55,8 @@ export class News extends Component {
   render() {
     return (
       <>
-      <div className='container my-3'>
-        <h2 className='text-center'>NewsBuzz - Top Headlines on {this.props.category.charAt(0).toUpperCase()+this.props.category.slice(1)}</h2>
+      <div className='container'>
+        <h2 className='text-center' style={{marginTop :'5rem'}}>NewsBuzz - Top Headlines on {this.props.category.charAt(0).toUpperCase()+this.props.category.slice(1)}</h2>
         {/* {this.state.loading && <Spinner />} */}
         <InfiniteScroll
           dataLength={this.state.articles.length} 
